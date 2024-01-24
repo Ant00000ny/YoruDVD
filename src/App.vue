@@ -1,13 +1,43 @@
 <template>
   <div id="box">
-    <yorushika-logo id="logo"/>
+    <img id="logo" src="@/assets/yorushika.svg" alt=""/>
   </div>
+  <!--<button @click="toggleFullscreen">Toggle Fullscreen</button>-->
 </template>
 
 
 <script setup>
-import YorushikaLogo from "@/components/icons/yorushika-logo.vue";
 import {onMounted} from "vue";
+import yorushika from "@/assets/yorushika.svg";
+import zutomayo from "@/assets/zutomayo.svg";
+import yoasobi from "@/assets/yoasobi.svg";
+
+// function toggleFullscreen() {
+//   let doc = window.document;
+//   let docEl = doc.documentElement;
+//
+//   let requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+//   let cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+//
+//   if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+//     requestFullScreen.call(docEl);
+//   } else {
+//     cancelFullScreen.call(doc);
+//   }
+// }
+
+let logos = [
+  yorushika,
+  zutomayo,
+  yoasobi,
+];
+let currentLogoIndex = 1
+
+function switchLogo() {
+  let logo = document.getElementById("logo");
+  logo.src = logos[currentLogoIndex++ % logos.length]
+  console.log(currentLogoIndex)
+}
 
 onMounted(() => {
   let logo = document.getElementById("logo");
@@ -33,17 +63,21 @@ onMounted(() => {
         if (xPos + logo.clientWidth > box.clientWidth) {
           xPos = box.clientWidth - logo.clientWidth
           xSpeed *= -1
+          switchLogo()
         } else if (xPos < 0) {
           xPos = 0
           xSpeed *= -1
+          switchLogo()
         }
 
         if (yPos + logo.clientHeight > box.clientHeight) {
           yPos = box.clientHeight - logo.clientHeight
           ySpeed *= -1
+          switchLogo()
         } else if (yPos < 0) {
           yPos = 0
           ySpeed *= -1
+          switchLogo()
         }
 
         // update position
@@ -67,10 +101,10 @@ onMounted(() => {
 }
 
 #logo {
-  width: 200px;
-  height: 200px;
   position: absolute;
   top: 0;
   left: 0;
+  width: 200px;
+  height: 200px;
 }
 </style>
