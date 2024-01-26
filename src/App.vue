@@ -1,16 +1,14 @@
 <template>
   <div id="box">
-    <img id="logo" src="@/assets/yorushika.svg" alt=""/>
+    <yorushika id="logo" :fill-color="currentColor"/>
   </div>
   <!--<button @click="toggleFullscreen">Toggle Fullscreen</button>-->
 </template>
 
 
 <script setup>
-import {onMounted} from "vue";
-import yorushika from "@/assets/yorushika.svg";
-import zutomayo from "@/assets/zutomayo.svg";
-import yoasobi from "@/assets/yoasobi.svg";
+import {onMounted, reactive, ref} from "vue";
+import Yorushika from "@/logo/yorushika.vue";
 
 // function toggleFullscreen() {
 //   let doc = window.document;
@@ -26,17 +24,33 @@ import yoasobi from "@/assets/yoasobi.svg";
 //   }
 // }
 
-let logos = [
-  yorushika,
-  zutomayo,
-  yoasobi,
-];
-let currentLogoIndex = 1
+// let logos = [
+//   yorushika,
+//   zutomayo,
+//   yoasobi,
+// ];
+// let currentLogoIndex = 1
+//
+// function switchLogo() {
+//   let logo = document.getElementById("logo");
+//   logo.src = logos[currentLogoIndex++ % logos.length]
+// }
 
-function switchLogo() {
-  let logo = document.getElementById("logo");
-  logo.src = logos[currentLogoIndex++ % logos.length]
-  console.log(currentLogoIndex)
+let colors = [
+  "#FF0000",
+  "#FF7F00",
+  "#FFFF00",
+  "#00FF00",
+  "#0000FF",
+  "#8F00FF",
+  "#FF00FF",
+    "#FFFFFF"
+]
+let currentColorIndex = 0
+let currentColor = ref(colors[currentColorIndex])
+
+function switchColor() {
+  currentColor.value = colors[++currentColorIndex % colors.length]
 }
 
 onMounted(() => {
@@ -46,8 +60,8 @@ onMounted(() => {
   // initial properties of the logo
   let xPos = 100
   let yPos = 100
-  let xSpeed = 3
-  let ySpeed = 3
+  let xSpeed = 5
+  let ySpeed = 5
   let fps = 60
 
   setInterval(
@@ -63,21 +77,25 @@ onMounted(() => {
         if (xPos + logo.clientWidth > box.clientWidth) {
           xPos = box.clientWidth - logo.clientWidth
           xSpeed *= -1
-          switchLogo()
+          // switchLogo()
+          switchColor()
         } else if (xPos < 0) {
           xPos = 0
           xSpeed *= -1
-          switchLogo()
+          // switchLogo()
+          switchColor()
         }
 
         if (yPos + logo.clientHeight > box.clientHeight) {
           yPos = box.clientHeight - logo.clientHeight
           ySpeed *= -1
-          switchLogo()
+          // switchLogo()
+          switchColor()
         } else if (yPos < 0) {
           yPos = 0
           ySpeed *= -1
-          switchLogo()
+          // switchLogo()
+          switchColor()
         }
 
         // update position
@@ -85,19 +103,19 @@ onMounted(() => {
         logo.style.top = `${yPos}px`;
       },
       // 60 FPS
-      1000 / fps)
+      1000 / fps
+  )
 })
 
 </script>
 <style scoped>
 #box, #logo {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 #box {
   position: relative;
+  background-color: #171515;
 }
 
 #logo {
